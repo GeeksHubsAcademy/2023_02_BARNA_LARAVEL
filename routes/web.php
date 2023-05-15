@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+    // // recuperaria informacion
+    // $users = [1,2,3,4];
+
+    // return view('welcome', $users);
+// });
