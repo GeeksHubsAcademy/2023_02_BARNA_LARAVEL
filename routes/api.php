@@ -21,3 +21,24 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return 'Bienvenidos a mi app';
 });
+
+Route::post('/tasks', function () {
+    return 'Create Task';
+});
+
+Route::get('/tasks', function () {
+    return 'Get Tasks';
+});
+
+Route::put('/tasks/{id}', function ($id) {
+    return 'Update Task with id: '.$id;
+});
+
+Route::delete('/tasks/{id}', function ($id) {
+    return 'Delete Task with id: '.$id;
+});
+
+
+
+
+
