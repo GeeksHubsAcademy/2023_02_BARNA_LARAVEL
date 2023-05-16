@@ -5,17 +5,33 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
     public function createTask(Request $request)
     {
         try {
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string|max:10',
+                'description' => 'required',
+                'user_id' => 'required'
+            ]);
+     
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "Body validation error",
+                        'errors' => $validator->errors()
+                    ]
+                    , 400
+                );
+            }
+
             $title = $request->input('title');
             $description = $request->input('description');
             $userId = $request->input('user_id');
-
-            // TODO Validaciones
 
             // insert using query builder
             // $newTask = DB::table('tasks')->insert([
