@@ -75,7 +75,7 @@ class TaskController extends Controller
     {
         try {
             $userId = auth()->user()->id;
-            
+
             $tasks = Task::query()
                 ->where('user_id', '=', $userId)
                 ->get();
@@ -178,8 +178,11 @@ class TaskController extends Controller
     public function deleteTask($id)
     {
         try {
+            $userId = auth()->user()->id;
+            
             $task = Task::query()
                 ->where('id', '=', $id)
+                ->where('user_id', '=', $userId)
                 ->first();
 
             if (!$task) {
