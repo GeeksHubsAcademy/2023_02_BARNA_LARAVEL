@@ -71,11 +71,13 @@ class TaskController extends Controller
         }
     }
 
-    public function getAllTasks($id)
+    public function getAllTasks()
     {
         try {
+            $userId = auth()->user()->id;
+            
             $tasks = Task::query()
-                ->where('user_id', '=', $id)
+                ->where('user_id', '=', $userId)
                 ->get();
 
             return response()->json(
