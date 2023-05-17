@@ -99,9 +99,79 @@ class TaskController extends Controller
         }
     }
 
-    public function updateTask($id)
+    public function updateTask(Request $request, $id)
     {
-        return 'Create Task with: ' . $id;
+        try {
+            Log::info('Update Task');
+            $validator = Validator::make($request->all(), [
+                'title' => 'string|max:10',
+                'description' => 'string',
+                'status' => 'boolean'
+            ]);
+     
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "Body validation error",
+                        'errors' => $validator->errors()
+                    ]
+                    , 400
+                );
+            }
+
+            $task = Task::find($id);
+
+            if (!$task) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "task doesnt exists"
+                    ]
+                    , 404
+                );
+            }
+
+            $title = $request->input('title');
+            $description = $request->input('description');
+            $status = $request->input('status');
+
+            if (isset($title)) {
+                $task->title = $request->input('title');
+            }
+
+            if (isset($description)) {
+                $task->description = $request->input('description');
+            }
+
+            if (isset($status)) {
+                $task->status = $request->input('status');
+            }
+
+            $task->save();
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Update task successfully",
+                    "data" => $task
+                ],
+                200
+            );
+
+
+        } catch (\Throwable $th) {
+            Log::alert($th->getMessage());
+
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error updating task",
+                    "error" => $th->getMessage()
+                ],
+                500
+            );
+        }
     }
 
     public function deleteTask($id)
