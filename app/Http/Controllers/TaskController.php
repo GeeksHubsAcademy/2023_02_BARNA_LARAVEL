@@ -13,12 +13,11 @@ class TaskController extends Controller
     public function createTask(Request $request)
     {
         try {
-            Log::info('Creating task');
+            Log::info('Creating task');            
 
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:10',
                 'description' => 'required',
-                'user_id' => 'required'
             ]);
      
             if ($validator->fails()) {
@@ -32,9 +31,9 @@ class TaskController extends Controller
                 );
             }
 
+            $userId = auth()->user()->id;
             $title = $request->input('title');
             $description = $request->input('description');
-            $userId = $request->input('user_id');
 
             // insert using query builder
             // $newTask = DB::table('tasks')->insert([
