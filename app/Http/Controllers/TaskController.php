@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
@@ -12,6 +13,8 @@ class TaskController extends Controller
     public function createTask(Request $request)
     {
         try {
+            Log::info('Creating task');
+
             $validator = Validator::make($request->all(), [
                 'title' => 'required|string|max:10',
                 'description' => 'required',
@@ -56,6 +59,8 @@ class TaskController extends Controller
                 201
             );
         } catch (\Throwable $th) {
+            Log::alert($th->getMessage());
+
             return response()->json(
                 [
                     "success" => false,
