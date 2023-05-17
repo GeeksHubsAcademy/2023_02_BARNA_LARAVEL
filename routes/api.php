@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthControler;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserContoller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,6 +40,13 @@ Route::post('/register', [AuthControler::class, 'register']);
 Route::post('/login', [AuthControler::class, 'login']);
 
 Route::get('/profile', [AuthControler::class, 'profile'])->middleware('auth:sanctum');
+
+
+Route::group([
+    'middleware' => ['auth:sanctum', 'IsAdmin']
+], function () {
+    Route::get('/users', [UserContoller::class, 'getAllUsers']);
+});
 
 
 
