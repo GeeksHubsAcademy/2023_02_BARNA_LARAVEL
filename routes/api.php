@@ -35,6 +35,8 @@ Route::delete('/tasks/{id}', [TaskController::class, 'deleteTask']);
 Route::post('/register', [AuthControler::class, 'register']);
 Route::post('/login', [AuthControler::class, 'login']);
 
+Route::get('/profile', [AuthControler::class, 'profile'])->middleware('auth:sanctum');
+
 
 
 

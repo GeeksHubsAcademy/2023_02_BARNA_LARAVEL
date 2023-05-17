@@ -42,7 +42,7 @@ class AuthControler extends Controller
                     "message" => "Cant register user",
                     "data" => $th->getMessage()
                 ],
-                200
+                500
             );
         }
     }
@@ -54,7 +54,7 @@ class AuthControler extends Controller
                 'email' => 'required|string',
                 'password' => 'required|string',
             ]);
-            
+
             $email = $request['email'];
 
             $user = User::query()->where('email', $email)->first();
@@ -76,13 +76,13 @@ class AuthControler extends Controller
                     [
                         "success" => true,
                         "message" => "Email or password are invalid"
-                    ], 
+                    ],
                     404
                 );
             }
 
             $token = $user->createToken('apiToken')->plainTextToken;
-            
+
             return response()->json(
                 [
                     "success" => true,
@@ -98,7 +98,32 @@ class AuthControler extends Controller
                     "message" => "Cant login user",
                     "data" => $th->getMessage()
                 ],
+                500
+            );
+        }
+    }
+
+    public function profile()
+    {
+        try {
+            $user = auth()->user();
+
+            return response(
+                [
+                    "success" => true,
+                    "message" => "User profile get succsessfully",
+                    "data" => $user
+                ],
                 200
+            );
+        } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Profile cant be retrieved",
+                    "data" => $th->getMessage()
+                ],
+                500
             );
         }
     }
