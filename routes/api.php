@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthControler;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,9 @@ Route::get('/tasks/{id}', [TaskController::class, 'getAllTasks']);
 Route::put('/tasks/{id}', [TaskController::class, 'updateTask']);
 Route::delete('/tasks/{id}', [TaskController::class, 'deleteTask']);
 
+
+// AUTH
+Route::post('/register', [AuthControler::class, 'register']);
 
 
 
