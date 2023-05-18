@@ -226,7 +226,7 @@ class TaskController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'user_id' => 'required',
+                'users_ids' => 'required',
             ]);
      
             if ($validator->fails()) {
@@ -256,7 +256,7 @@ class TaskController extends Controller
 
             // comprobar si el usuario existe
 
-            $userId = $request->input('user_id');
+            $usersIds = $request->input('users_ids');
             $taskId = $id;
 
             // todo no permitir mas de 4 usuario en una tarea
@@ -268,11 +268,14 @@ class TaskController extends Controller
             // ]);
 
             // WITH ELOQUENT
-            $user = User::find($userId);
 
-            $addUserToTask = $user
+            foreach ($usersIds as $userId) {
+                $user = User::find($userId);
+
+                $addUserToTask = $user
                 ->tasksManyToMany()
                 ->attach($taskId);
+            }            
 
             return response()->json(
                 [
