@@ -269,6 +269,7 @@ class TaskController extends Controller
 
             // WITH ELOQUENT
 
+            // todo Refactor to be more faster
             foreach ($usersIds as $userId) {
                 $user = User::find($userId);
 
