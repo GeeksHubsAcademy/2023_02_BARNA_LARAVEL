@@ -47,6 +47,7 @@ Route::group([
 ], function () {
     Route::get('/users', [UserContoller::class, 'getAllUsers']);
     Route::post('/add-user-to-task/{id}', [TaskController::class, 'addUserToTask']);
+    Route::delete('/delete-user-to-task/{taskId}/{userId}', [TaskController::class, 'deleteUserToTask']);
     Route::get('/get-task-users/{id}', [TaskController::class, 'getTaskUsers']); 
 });
 

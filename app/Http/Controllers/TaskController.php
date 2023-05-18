@@ -311,4 +311,31 @@ class TaskController extends Controller
             );
         }
     }
+
+    public function deleteUserToTask($taskId, $userId)
+    {
+        try {
+            $user = User::find($userId);
+
+            $user->tasksManyToMany()->detach($taskId);
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Tasks user deleted successfully",
+                    // "data" => $task->usersManyToMany
+                ],
+                200
+            );
+        } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error deleting task user",
+                    "error" => $th->getMessage()
+                ],
+                500
+            );
+        }
+    }
 }
