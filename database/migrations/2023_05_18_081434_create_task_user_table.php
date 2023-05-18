@@ -21,6 +21,8 @@ return new class extends Migration
             $table->foreign('task_id')->references('id')->on('tasks');
             $table->boolean('is_aproved')->default(false);
             $table->timestamps();
+
+            $table->unique('user_id', 'task_id');
         });
     }
 
