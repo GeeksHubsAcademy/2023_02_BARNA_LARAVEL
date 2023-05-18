@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -76,9 +77,13 @@ class TaskController extends Controller
         try {
             $userId = auth()->user()->id;
 
-            $tasks = Task::query()
-                ->where('user_id', '=', $userId)
-                ->get();
+            // GetAllTasksByUser without relations
+            // $tasks = Task::query()
+            //     ->where('user_id', '=', $userId)
+            //     ->get();
+
+            // GetAllTasksByUser with eloquent relations
+            $tasks = User::find($userId)->tasks;   ;
 
             return response()->json(
                 [
@@ -179,7 +184,7 @@ class TaskController extends Controller
     {
         try {
             $userId = auth()->user()->id;
-            
+
             $task = Task::query()
                 ->where('id', '=', $id)
                 ->where('user_id', '=', $userId)
