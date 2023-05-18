@@ -221,4 +221,69 @@ class TaskController extends Controller
             );
         }
     }
+
+    public function addUserToTask(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'user_id' => 'required',
+            ]);
+     
+            if ($validator->fails()) {
+                return response()->json(
+                    [
+                        'success' => true,
+                        'message' => "Body validation error",
+                        'errors' => $validator->errors()
+                    ]
+                    , 400
+                );
+            }
+
+            $task = Task::query()
+                ->where('id', '=', $id)
+                ->first();
+
+            if (!$task) {
+                return response()->json(
+                    [
+                        "success" => true,
+                        "message" => "Task doesnt exists",
+                    ],
+                    404
+                );
+            }
+
+            // comprobar si el usuario existe
+
+            $userId = $request->input('user_id');
+            $taskId = $id;
+
+            // todo no permitir mas de 4 usuario en una tarea
+
+            // QUERY BUILDER
+            $addUserToTask = DB::table('task_user')->insert([
+                "user_id" => $userId,
+                "task_id" => $taskId
+            ]);
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Add user to task successfully",
+                    "data" => $addUserToTask
+                ],
+                200
+            );
+        } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error adding user to task",
+                    "error" => $th->getMessage()
+                ],
+                500
+            );
+        }
+    }
 }
