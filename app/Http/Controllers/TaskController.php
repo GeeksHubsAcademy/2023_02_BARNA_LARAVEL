@@ -262,10 +262,17 @@ class TaskController extends Controller
             // todo no permitir mas de 4 usuario en una tarea
 
             // QUERY BUILDER
-            $addUserToTask = DB::table('task_user')->insert([
-                "user_id" => $userId,
-                "task_id" => $taskId
-            ]);
+            // // $addUserToTask = DB::table('task_user')->insert([
+            //     "user_id" => $userId,
+            //     "task_id" => $taskId
+            // ]);
+
+            // WITH ELOQUENT
+            $user = User::find($userId);
+
+            $addUserToTask = $user
+                ->tasksManyToMany()
+                ->attach($taskId);
 
             return response()->json(
                 [
