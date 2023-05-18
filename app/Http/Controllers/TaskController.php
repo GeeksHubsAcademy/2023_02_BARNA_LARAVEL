@@ -286,4 +286,29 @@ class TaskController extends Controller
             );
         }
     }
+
+    public function getTaskUsers($id)
+    {
+        try {
+            $task = Task::find($id);
+
+            return response()->json(
+                [
+                    "success" => true,
+                    "message" => "Tasks users successfully",
+                    "data" => $task->usersManyToMany
+                ],
+                200
+            );
+        } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    "success" => false,
+                    "message" => "Error getting task users",
+                    "error" => $th->getMessage()
+                ],
+                500
+            );
+        }
+    }
 }
